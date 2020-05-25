@@ -83,6 +83,12 @@ int getopt_create_context( getopt_context_t* ctx, int argc, const char** argv, c
 			opt->value == -1)
 			return -1;
 
+		if( opt->name )
+		{
+			if( opt->name[0] == '-' )
+				return -1;
+		}
+
 		ctx->num_opts++; opt++;
 	}
 
@@ -145,6 +151,9 @@ int getopt_next( getopt_context_t* ctx )
 			const char* check_option = curr_token + 2;
 
 			const getopt_option_t* opt = ctx->opts + i;
+
+			if(!opt->name)
+				continue;
 
 			unsigned int name_len = (unsigned int)strlen( opt->name );
 
